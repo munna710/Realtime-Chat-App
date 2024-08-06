@@ -1,4 +1,16 @@
 /**
+ * Variables
+ */
+
+
+let chatName = ''
+let chatSocket = null
+let chatWindowUrl = window.location.href
+let chatRoomUuid = Math.random().toString(36).slice(2, 12)
+
+// console.log("chatRoomUuid",chatRoomUuid)
+
+/**
  * Elements
  */
 
@@ -7,7 +19,161 @@ const chatOpenElement = document.querySelector('#chat_open')
 const chatJoinElement = document.querySelector('#chat_join')
 const chatIconElement = document.querySelector('#chat_icon')
 const chatWelcomeElement = document.querySelector('#chat_welcome')
+const chatRoomElement = document.querySelector('#chat_room')
+const chatNameElement = document.querySelector('#chat_name')
+const chatLogElement = document.querySelector('#chat_log')
+const chatInputElement = document.querySelector('#chat_message_input')
+const chatSubmitElement = document.querySelector('#chat_message_submit')
 
+
+/**
+ * Functions 
+ */
+
+function scrollToBottom() {
+    chatLogElement.scrollTop = chatLogElement.scrollHeight
+}
+
+
+function getCookie(name) {
+    var cookieValue = null
+
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';')
+
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim()
+
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+
+                break
+            }
+        }
+    }
+
+    return cookieValue
+}
+
+function sendMessage() {
+    chatSocket.send(JSON.stringify({
+        'type': 'message',
+        'message': chatInputElement.value,
+        'name': chatName
+    }))
+
+    chatInputElement.value = ''
+}
+function onChatMessage(data) {
+    console.log('onChatMessage', data);
+
+    if (data.type == 'chat_message') {
+        let tmpInfo = document.querySelector('.tmp-info');
+
+        if (tmpInfo) {
+            tmpInfo.remove();
+        }
+
+        if (data.agent) {
+            chatLogElement.innerHTML += `
+                <div class="d-flex w-100 mt-2" style="max-width: 448px;">
+                    <div class="border border-2 border-light rounded-circle bg-warning text-dark text-center pt-2" style="flex-shrink: 0;">${data.initials}</div>
+                    <div class="ml-2">
+                        <div class="border border-2 border-light bg-secondary p-3 rounded-left rounded-bottom">
+                            <p class="small mb-0">${data.message}</p>
+                        </div>
+                        <span class="text-muted small">${data.created_at} ago</span>
+                    </div>
+                </div>
+            `;
+        } else {
+            chatLogElement.innerHTML += `
+                <div class="d-flex w-100 mt-2 ml-auto justify-content-end" style="max-width:448px">
+                    <div class="mr-2">
+                        <div class="border border-2 border-light bg-secondary p-3" style="max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; border-radius: 10px 0 10px 10px;">
+                            <p class="small mb-0">${data.message}</p>
+                        </div>
+                        <span class="text-muted small">${data.created_at} ago</span>
+                    </div>
+                    <div class="border border-2 border-light rounded-circle bg-info text-center text-dark p-2" style="flex-shrink: 0; height: 45px; width: 45px; margin-left: 10px;">${data.initials}</div>
+                </div>
+            `;
+        }
+    } else if (data.type == 'users_update') {
+        chatLogElement.innerHTML += '<p class="mt-2">The admin/agent has joined the chat!</p>';
+    } else if (data.type == 'writing_active') {
+        if (data.agent) {
+            let tmpInfo = document.querySelector('.tmp-info');
+
+            if (tmpInfo) {
+                tmpInfo.remove();
+            }
+
+            chatLogElement.innerHTML += `
+                <div class="tmp-info d-flex w-100 mt-2 max-w-md">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-circle bg-secondary text-center pt-2">${data.initials}</div>
+                    <div class="ml-2">
+                        <div class="bg-secondary p-3 rounded-left rounded-bottom-right">
+                            <p class="small mb-0">The agent/admin is writing a message</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    scrollToBottom();
+}
+async function joinChatRoom(){
+    console.log('joinChatRoom')
+
+    chatName = chatNameElement.value
+
+    console.log('Join as:', chatName)
+    console.log('Room uuid:', chatRoomUuid)
+
+    const data = new FormData()
+    data.append('name', chatName)
+    data.append('url', chatWindowUrl)
+
+    await fetch(`/api/create-room/${chatRoomUuid}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: data
+    })
+    .then(function(res) {
+        return res.json()
+    })
+    .then(function(data) {
+        console.log('data', data)
+    })
+
+    chatSocket = new WebSocket(`ws://${window.location.host}/ws/${chatRoomUuid}/`)
+
+
+    chatSocket.onmessage = function(e) {
+        console.log('onMessage')
+
+        onChatMessage(JSON.parse(e.data))
+    }
+
+
+    chatSocket.onopen = function(e) {
+        console.log('onOpen - chat socket was opened')
+
+        scrollToBottom()
+    }
+
+
+    chatSocket.onclose = function(e) {
+
+        console.log('onClose - chat socket was closed')
+    }
+    
+
+}
 
 /**
  * Event listeners
@@ -22,9 +188,27 @@ chatOpenElement.onclick = function(e) {
     return false
 }
 
-document.addEventListener('click', function(e) {
-    if (!chatWelcomeElement.contains(e.target) && !chatOpenElement.contains(e.target)) {
-        chatIconElement.classList.remove('d-none');
-        chatWelcomeElement.classList.add('d-none');
-    }
-});
+chatJoinElement.onclick = function(e) {
+    e.preventDefault()
+
+    chatWelcomeElement.classList.add('d-none')
+    chatRoomElement.classList.remove('d-none')
+
+    joinChatRoom()
+
+    return false
+}
+
+chatSubmitElement.onclick = function(e) {
+    e.preventDefault()
+
+    sendMessage()
+
+    return false
+}
+// document.addEventListener('click', function(e) {
+//     if (!chatWelcomeElement.contains(e.target) && !chatOpenElement.contains(e.target)) {
+//         chatIconElement.classList.remove('d-none');
+//         chatWelcomeElement.classList.add('d-none');
+//     }
+// });
