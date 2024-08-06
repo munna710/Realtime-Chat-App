@@ -1,2 +1,10 @@
 venv/
 chatenv/
+
+# Ignore Python cache files
+__pycache__/
+
+# Other files and directories to ignore
+node_modules/
+*.log
+*.env
