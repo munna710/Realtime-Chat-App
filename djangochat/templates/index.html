@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+
 
 <div class="mt-4 py-4 px-3 row border border-light rounded-xl">
     <div class="col-md-5">
@@ -58,5 +60,9 @@
         <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec accumsan tortor at sem fermentum tempor.</p>
     </div>
 </div>
+{% include 'partials/chat_bubble.html' %}
+{% endblock %}
 
+{% block scripts %}
+<script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,53 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+
+<div id="chat" class="border border-light border-2 rounded position-fixed end-0 bottom-0 p-2 bg-warning" style="max-width: 300px;">
+    <div id="chat_icon">
+        <button id="chat_open" class="btn btn-warning p-0" style="max-width: 50px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="text-danger" style="width: 32px; height: 32px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+            </svg>         
+        </button>
+    </div>
+    <div id="chat_welcome" class="d-none">
+        <input type="text" name="name" id="chat_name" class="w-100 mb-4 py-2 px-3 rounded bg-dark text-white" placeholder="Your name...">
+        <div class="d-flex justify-content-center">
+        <button id="chat_join" class="py-2 px-3 w-50 btn-dark rounded">Join chat</button>
+    </div>
+    </div>
+    <div id="chat_room" class="">
+        <div id="chat_log" class="mb-4 py-2 px-3 bg-dark text-light rounded overflow-auto" style="height: 300px;">
+            <p>Welcome to our chat! Please type your message and wait for an agent to join...</p>
+        </div>
+
+        <input type="text" name="body" id="chat_message_input" class="w-100 mb-4 p-4 bg-dark text-light rounded" placeholder="Type your message...">
+        <div class="d-flex justify-content-center">
+            <button id="chat_message_submit" class="py-2 px-3 btn btn-dark w-50 rounded">Send</button>
+        </div>
+    </div>
+</div>
+
+<!-- <div id="chat" class="max-w-300px position-fixed end-2 bottom-2 p-4 bg-white border border-secondary rounded-xl">
+    <div id="chat_icon">
+        <button id="chat_open" class="w-50 d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="text-danger">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+            </svg>              
+        </button>
+    </div>
+
+    <div id="chat_welcome" class="d-none">
+        <input type="text" name="name" id="chat_name" class="w-100 mb-4 py-2 px-3 rounded bg-light" placeholder="Your name...">
+        <button id="chat_join" class="py-2 px-3 rounded text-white bg-danger">Join chat</button>
+    </div>
+
+    <div id="chat_room" class="d-none">
+        <div id="chat_log" class="mb-4 p-4 bg-light rounded h-300px overflow-auto">
+            <p>Welcome to our chat! Please type your message and wait for an agent to join...</p>
+        </div>
+
+        <input type="text" name="body" id="chat_message_input" class="w-100 mb-4 p-4 bg-light rounded" placeholder="Type your message...">
+        <button id="chat_message_submit" class="py-2 px-3 bg-danger text-white rounded">Send</button>
+    </div>
+</div> -->
