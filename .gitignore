@@ -2,7 +2,8 @@
 *.py[cod]
 __pycache__/
 *.so
-
+venv/
+chatenv/
 # Distribution / packaging
 .Python
 env/
