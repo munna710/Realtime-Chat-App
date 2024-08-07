@@ -21,14 +21,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link h4 text-warning" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link h5 text-warning" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link h4 text-warning" href="{% url 'about' %}">About</a>
+                        <a class="nav-link h5 text-warning" href="{% url 'about' %}">About</a>
                     </li>
                     {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link h5 d-inline-block py-3 px-4 bg-warning rounded text-dark border border-light" href="{% url 'chat:admin' %}">Chat Admin</a>
+                        <a class="nav-link h5 d-inline-block py-2 px-3 bg-warning rounded text-dark border border-light" href="{% url 'chat:admin' %}">Chat Admin</a>
                     </li>
                     {% endif %}
                 </ul>

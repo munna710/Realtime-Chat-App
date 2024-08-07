@@ -2,8 +2,16 @@
     <div class="row">
         {% for room in rooms %}
             <div class="col-md-3 mb-4">
-                <div class="p-4 rounded {% if room.status == 'waiting' %}bg-success{% elif room.status == 'active' %}bg-warning{% else %}bg-light{% endif %}">
-                    <h3 class="mb-4">Chat</h3>
+                <div class="p-4 rounded {% if room.status == 'waiting' %}border border-success text-light border-2{% elif room.status == 'active' %}border border-warning text-light border-2{% else %}border border-light text-light border-2{% endif %}">
+                    <h4 class="mb-4">Chat</h4>
+                    <p>
+                        <b>ID: </b>{{ room.uuid }}<br>
+                        <b>Name: </b>{{ room.client }}<br>
+                        <b>Status: </b>{{ room.get_status_display }}<br>
+                        <b>Agent: </b>{% firstof room.agent.name 'None yet...' %}
+                    </p>
+
+                    <a href="{% url 'chat:room' room.uuid %}" class="btn btn-outline-info w-50">Join</a>
                 </div>
             </div>
         {% endfor %}

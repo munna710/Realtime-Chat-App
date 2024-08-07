@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static chatextras %}
+
+{% block content %}
+<h1 class="text-warning">Room "{{ room.uuid }}"</h1>
+
+    <hr class="my-6 bg-light">
+
+    <p class="mb-6 text-light">
+        <b>Name: </b>{{ room.client }}<br>
+        <b>Started: </b>{{ room.created_at|timesince }} ago<br>
+        <b>Status: </b>{{ room.get_status_display }}<br>
+        <b>Page: </b>{{ room.url }}<br>
+        <b>Agent: </b>{% firstof room.agent.name 'None yet...' %}
+    </p>
+
+    <hr class="mb-6 bg-light">
+    <div id="chat_log" class="mb-4 p-4 border border-light rounded h-300 overflow-auto d-flex flex-column flex-grow-1">
+        {% for message in room.messages.all %}
+            <div class="d-flex mt-2 {% if message.created_by %}justify-content-end{% endif %}">
+                {% if not message.created_by %}
+                    <div class="rounded-circle border border-2 border-info text-light pt-2 text-center" style="flex-shrink: 0; height: 45px; width: 45px; margin-right: 10px;">
+                        {{ message.sent_by|initials }}
+                    </div>
+                {% endif %}
+    
+                <div>
+                    <div class="p-4 {% if message.created_by %}border border-2 border-warning text-light message-user{% else %}border-2 border border-info text-light message-other {% endif %}" style="max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all;">
+                        <p class="text-sm">{{ message.body }}</p>
+                    </div>
+    
+                    <span class="text-muted small">{{ message.created_at|timesince }} ago</span>
+                </div>
+    
+                {% if message.created_by %}
+                    <div class="rounded-circle text-center pt-2 border border-2 border-warning text-light" style="flex-shrink: 0; height: 45px; width: 45px; margin-left: 10px;">
+                        {{ message.sent_by|initials }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+    {% if room.status == 'active' %}
+        <input type="text" name="body" id="chat_message_input" class="form-control bg-dark mb-4 p-4 rounded border border-light text-light" placeholder="Type your message...">
+        <button id="chat_message_submit" class="btn btn-warning py-2 px-6">SEND</button>
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    {% if room.status == 'active' %}
+        {{ room.uuid|json_script:'room_uuid' }}
+        {{ request.user.name|json_script:'user_name' }}
+        {{ request.user.id|json_script:'user_id' }}
+
+        <script src="{% static 'js/main_admin.js' %}"></script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+.message-user{
+    border-radius: 10px 0 10px 10px;
+}
+
+/* Message bubble for messages not created by the user */
+.message-other{
+    border-radius: 0px 10px 10px 10px;
+}

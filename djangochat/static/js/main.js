@@ -77,9 +77,9 @@ function onChatMessage(data) {
         if (data.agent) {
             chatLogElement.innerHTML += `
                 <div class="d-flex w-100 mt-2" style="max-width: 448px;">
-                    <div class="border border-2 border-light rounded-circle bg-warning text-dark text-center pt-2" style="flex-shrink: 0;">${data.initials}</div>
+                    <div class="border border-2 border-warning rounded-circle text-white text-center pt-2" style="flex-shrink: 0; height: 45px; width: 45px; margin-right: 10px;">${data.initials}</div>
                     <div class="ml-2">
-                        <div class="border border-2 border-light bg-secondary p-3 rounded-left rounded-bottom">
+                        <div class="border border-2 border-warning p-3"style="max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; border-radius: 0px 10px 10px 10px;">
                             <p class="small mb-0">${data.message}</p>
                         </div>
                         <span class="text-muted small">${data.created_at} ago</span>
@@ -90,12 +90,12 @@ function onChatMessage(data) {
             chatLogElement.innerHTML += `
                 <div class="d-flex w-100 mt-2 ml-auto justify-content-end" style="max-width:448px">
                     <div class="mr-2">
-                        <div class="border border-2 border-light bg-secondary p-3" style="max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; border-radius: 10px 0 10px 10px;">
+                        <div class="border border-2 border-info p-3" style="max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; border-radius: 10px 0 10px 10px;">
                             <p class="small mb-0">${data.message}</p>
                         </div>
                         <span class="text-muted small">${data.created_at} ago</span>
                     </div>
-                    <div class="border border-2 border-light rounded-circle bg-info text-center text-dark p-2" style="flex-shrink: 0; height: 45px; width: 45px; margin-left: 10px;">${data.initials}</div>
+                    <div class="border border-2 border-info rounded-circle text-center text-light p-2" style="flex-shrink: 0; height: 45px; width: 45px; margin-left: 10px;">${data.initials}</div>
                 </div>
             `;
         }
@@ -110,11 +110,11 @@ function onChatMessage(data) {
             }
 
             chatLogElement.innerHTML += `
-                <div class="tmp-info d-flex w-100 mt-2 max-w-md">
-                    <div class="flex-shrink-0 h-10 w-10 rounded-circle bg-secondary text-center pt-2">${data.initials}</div>
+                <div class="tmp-info d-flex w-100 mt-2" style="max-width:448px">
+                    <div class="rounded-circle border border-warning border-2 text-center pt-2 text-white"style="flex-shrink: 0; height: 45px; width: 45px; margin-right: 10px;">${data.initials}</div>
                     <div class="ml-2">
-                        <div class="bg-secondary p-3 rounded-left rounded-bottom-right">
-                            <p class="small mb-0">The agent/admin is writing a message</p>
+                        <div class="p-3 border border-light" style="border-radius: 0px 10px 10px 10px;">
+                            <p class="small mb-0 text-muted">The agent/admin is writing a message...</p>
                         </div>
                     </div>
                 </div>
@@ -212,3 +212,18 @@ chatSubmitElement.onclick = function(e) {
 //         chatWelcomeElement.classList.add('d-none');
 //     }
 // });
+
+chatInputElement.onkeyup = function(e) {
+    if (e.keyCode == 13) {
+        sendMessage()
+    }
+}
+
+
+chatInputElement.onfocus = function(e) {
+    chatSocket.send(JSON.stringify({
+        'type': 'update',
+        'message': 'writing_active',
+        'name': chatName
+    }))
+}
