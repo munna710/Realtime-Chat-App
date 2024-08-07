@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="text-light">Chat admin</h1>
+
+    {% if perms.user.add_user %}
+        <div class="mt-8"> 
+            <h2 class="mb-4 text-info">Users</h2>
+
+            <a href="#" class="nav-link d-inline-block py-2 px-6 bg-info text-white rounded border border-2 border-light mb-4 bg-opacity-50"> ADD USER</a>
+
+            <div class="p-2">
+                {% for user in users %}
+                <div class="row py-2 {% cycle 'border border-light bg-secondary rounded bg-opacity-50' '' %}">
+                    <div class="col-3 px-2 text-light">
+                        <a href="#" class="text-light text-decoration-none">{{ user.name }}</a>
+                    </div>
+                
+                    <div class="col-3 px-2 text-light">{{ user.email }}</div>
+                
+                    <div class="col-3 px-2 text-light">{{ user.get_role_display }}</div>
+                    <div class="col-3 px-2 text-end">
+                        {% if perms.user.edit_user %}
+                            <a href="#" class="text-decoration-underline text-light">Edit</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+    {% endif %}
+    <hr class="my-6 bg-light">
+    <div class="mt-8">
+        <h2 class="mb-4">Rooms</h2>
+
+        {% include 'partials/room_list.html' %}
+    </div>
+
+{% endblock %}

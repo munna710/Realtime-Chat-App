@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row">
+        {% for room in rooms %}
+            <div class="col-md-3 mb-4">
+                <div class="p-4 rounded {% if room.status == 'waiting' %}bg-success{% elif room.status == 'active' %}bg-warning{% else %}bg-light{% endif %}">
+                    <h3 class="mb-4">Chat</h3>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
