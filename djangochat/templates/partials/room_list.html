@@ -11,7 +11,11 @@
                         <b>Agent: </b>{% firstof room.agent.name 'None yet...' %}
                     </p>
 
-                    <a href="{% url 'chat:room' room.uuid %}" class="btn btn-outline-info w-50">Join</a>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'chat:room' room.uuid %}" class="btn btn-outline-info me-2 w-50">Join</a>
+                        <a href="{% url 'chat:delete_room' room.uuid %}" class="btn btn-outline-danger w-50">Delete</a>
+                    </div>
+                    
                 </div>
             </div>
         {% endfor %}
