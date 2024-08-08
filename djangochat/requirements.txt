@@ -6,8 +6,8 @@ blinker==1.8.2
 Brotli==1.1.0
 certifi==2024.7.4
 cffi==1.16.0
-charset-normalizer==3.3.2
 channels==4.0.0
+charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 comtypes==1.4.5
@@ -48,6 +48,7 @@ pypiwin32==223
 PyRect==0.2.0
 PyScreeze==0.1.30
 python-decouple==3.8
+python-dotenv==1.0.1
 pyttsx3==2.90
 pytweening==1.2.0
 pytz==2024.1

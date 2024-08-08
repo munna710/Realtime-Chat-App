@@ -2,6 +2,12 @@
 # Exit on error
 set -o errexit
 
+# Ensure the correct Python version is being used
+python --version
+
+# Upgrade pip to the latest version
+pip install --upgrade pip
+
 # Modify this line as needed for your package manager (pip, poetry, etc.)
 pip install -r requirements.txt
 
