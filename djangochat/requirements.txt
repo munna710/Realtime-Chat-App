@@ -44,7 +44,6 @@ pycparser==2.22
 PyGetWindow==0.0.9
 PyMsgBox==1.0.9
 pyperclip==1.9.0
-pypiwin32==223
 PyRect==0.2.0
 PyScreeze==0.1.30
 python-decouple==3.8
