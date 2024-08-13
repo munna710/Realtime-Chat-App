@@ -59,3 +59,13 @@ This is a realtime chat application built with Django and WebSockets. The applic
 ## Deployed Application
 
 You can access the deployed application at https://realtime-chat-app-8oy9.onrender.com/.
+
+
+
+## shots
+
+![](images/userside.png)
+![](images/admin.png)
+![](images/adduser.png)
+![](images/edituser.png)
+![](images/roomdetails.png)
